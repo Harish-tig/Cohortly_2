@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "132030536909",
+    "project_id": "messaging-ca43c",
+    "storage_bucket": "messaging-ca43c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132030536909:android:4de685674b864ed6b21d84",
+        "android_client_info": {
+          "package_name": "com.example.messagingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwGQI5xZ3J07PnHHTh0WUy0nE0LTWfUng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

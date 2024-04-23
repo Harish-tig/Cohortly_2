@@ -5,6 +5,8 @@ import 'package:messagingapp/pages/chatpage.dart';
 import 'package:messagingapp/service/database.dart';
 import 'package:messagingapp/service/shared_pref.dart';
 import 'package:messagingapp/pages/chatbot.dart';
+import 'package:messagingapp/pages/logout.dart';
+import 'package:messagingapp/pages/signin.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -104,130 +106,144 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService(); // Initialize AuthService
+
     return Scaffold(
-        backgroundColor: Color(0xFF553370),
-        body: Container(
-            child: Column(children: [
+      backgroundColor: Color(0xFF553370),
+      body: Column(
+        children: [
           Padding(
-            padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 search
                     ? Expanded(
-                        child: TextField(
-                        onChanged: (value) {
-                          initiateSearch(value.toUpperCase());
-                        },
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search User',
-                            hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500)),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500),
-                      ))
-                    : Text(
-                        "ChatUp",
-                        style: TextStyle(
-                            color: Color(0Xffc199cd),
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.bold),
+                  child: TextField(
+                    onChanged: (value) {
+                      initiateSearch(value.toUpperCase());
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Search User',
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
                       ),
+                    ),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
+                    : Text(
+                  "ChatUp",
+                  style: TextStyle(
+                    color: Color(0Xffc199cd),
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 GestureDetector(
                   onTap: () {
                     search = true;
                     setState(() {});
                   },
                   child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          color: Color(0xFF3a2144),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: search
-                          ? GestureDetector(
-                              onTap: () {
-                                search = false;
-                                setState(() {});
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: Color(0Xffc199cd),
-                              ),
-                            )
-                          : Icon(
-                              Icons.search,
-                              color: Color(0Xffc199cd),
-                            )),
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3a2144),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: search
+                        ? GestureDetector(
+                      onTap: () {
+                        search = false;
+                        setState(() {});
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: Color(0Xffc199cd),
+                      ),
+                    )
+                        : Icon(
+                      Icons.search,
+                      color: Color(0Xffc199cd),
+                    ),
+                  ),
                 )
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-              width: MediaQuery.of(context).size.width,
-              height: search
-                  ? MediaQuery.of(context).size.height / 1.19
-                  : MediaQuery.of(context).size.height / 1.15,
-              decoration: BoxDecoration(
+          Flexible(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+                width: MediaQuery.of(context).size.width,
+                height: search
+                    ? MediaQuery.of(context).size.height / 1.19
+                    : MediaQuery.of(context).size.height / 1.15,
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: Column(
-                children: [
-                  search
-                      ? ListView(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                          primary: false,
-                          shrinkWrap: true,
-                          children: tempSearchStore.map((element) {
-                            return buildResultCard(element);
-                          }).toList())
-                      : Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Chatbot()));
-                              },
-                              child: Row(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    search
+                        ? ListView(
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      primary: false,
+                      shrinkWrap: true,
+                      children: tempSearchStore.map((element) {
+                        return buildResultCard(element);
+                      }).toList(),
+                    )
+                        : Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Chatbot(),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    width: 10.0,
+                                    height: 10.0,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                    ],
-                                  ),
-                                  Spacer(),
                                 ],
                               ),
-                            ),
-                            ChatRoomList(),
-                          ],
+                              Spacer(),
+                            ],
+                          ),
                         ),
-                ],
+                        ChatRoomList(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ])
-        ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Define the action when the button is pressed
@@ -240,8 +256,33 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.adb_sharp),
         backgroundColor: Color(0Xffc199cd),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xFF553370),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  await _auth.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignIn()),
+                  );
+                },
+                child: Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
+
 
   Widget buildResultCard(data) {
     return GestureDetector(

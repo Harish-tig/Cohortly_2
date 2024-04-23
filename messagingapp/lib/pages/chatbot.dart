@@ -1,13 +1,9 @@
-//import 'dart:convert';
-//import 'package:http/http.dart' as http;
-
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
-
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 class Chatbot extends StatefulWidget {
-  const Chatbot({super.key});
+  const Chatbot({Key? key}) : super(key: key);
 
   @override
   State<Chatbot> createState() => _ChatbotState();
@@ -51,13 +47,35 @@ class _ChatbotState extends State<Chatbot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DashChat(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF26A69A),
+        title: Row(
+          children: [
+            Icon(Icons.account_circle_outlined),
+            SizedBox(width: 8),
+            Text(
+              'Chat with Gemini',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black), // Define border properties
+
+        ),
+        child: DashChat(
           typingUsers: typing,
           currentUser: myself,
           onSend: (ChatMessage m) {
             getData(m);
           },
-          messages: allmessages),
+          messages: allmessages,
+        ),
+      ),
     );
   }
 }

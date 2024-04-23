@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:messagingapp/pages/chatpage.dart';
-import 'package:messagingapp/pages/forgotpassword.dart';
 import 'package:messagingapp/pages/home.dart';
-import 'package:messagingapp/pages/signin.dart';
+// import 'package:messagingapp/pages/chatpage.dart';
+// import 'package:messagingapp/pages/forgotpassword.dart';
+// import 'package:messagingapp/pages/home.dart';
+// import 'package:messagingapp/pages/signin.dart';
 import 'package:messagingapp/pages/signup.dart';
 import 'package:messagingapp/service/auth.dart';
 

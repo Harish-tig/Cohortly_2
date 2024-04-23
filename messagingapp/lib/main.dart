@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         future: AuthMethods().getcurrentUser(),
         builder: (context, AsyncSnapshot<dynamic> snapshot){
         if(snapshot.hasData){
-          return SignUp();
+          return Home();
         }else{
           return SignUp();
         }

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:messagingapp/pages/chatpage.dart';
 import 'package:messagingapp/service/database.dart';
 import 'package:messagingapp/service/shared_pref.dart';
+import 'package:messagingapp/pages/chatbot.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -41,7 +43,6 @@ class _HomeState extends State<Home> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
-                    print(ds.id);
                     return ChatRoomListTile(
                         chatRoomId: ds.id,
                         lastMessage: ds["lastMessage"],
@@ -167,29 +168,90 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-            width: MediaQuery.of(context).size.width,
-            height: search
-                ? MediaQuery.of(context).size.height / 1.19
-                : MediaQuery.of(context).size.height / 1.15,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            child: Column(
-              children: [
-                search
-                    ? ListView(
-                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        primary: false,
-                        shrinkWrap: true,
-                        children: tempSearchStore.map((element) {
-                          return buildResultCard(element);
-                        }).toList())
-                    : ChatRoomList(),
-              ],
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+              width: MediaQuery.of(context).size.width,
+              height: search
+                  ? MediaQuery.of(context).size.height / 1.19
+                  : MediaQuery.of(context).size.height / 1.15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: Column(
+                children: [
+                  search
+                      ? ListView(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          primary: false,
+                          shrinkWrap: true,
+                          children: tempSearchStore.map((element) {
+                            return buildResultCard(element);
+                          }).toList())
+                      : Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Chatbot()));
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(60),
+                                      child: Image.asset(
+                                        "images/gemini.png",
+                                        height: 60,
+                                        width: 60,
+                                        fit: BoxFit.cover,
+                                      )),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Gemini",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17.0,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "How can I help you today?",
+                                        style: TextStyle(
+                                            color: Colors.black45,
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                            ),
+                            ChatRoomList(),
+                          ],
+                        ),
+                ],
+              ),
             ),
           ),
         ])));
@@ -343,7 +405,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                       fontWeight: FontWeight.w500),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width/2,
+                  width: MediaQuery.of(context).size.width / 2,
                   child: Text(
                     widget.lastMessage,
                     overflow: TextOverflow.ellipsis,

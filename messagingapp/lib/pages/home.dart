@@ -203,14 +203,6 @@ class _HomeState extends State<Home> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(60),
-                                      child: Image.asset(
-                                        "images/gemini.png",
-                                        height: 60,
-                                        width: 60,
-                                        fit: BoxFit.cover,
-                                      )),
                                   SizedBox(
                                     width: 10.0,
                                   ),
@@ -220,26 +212,6 @@ class _HomeState extends State<Home> {
                                     children: [
                                       SizedBox(
                                         height: 10.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Gemini",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17.0,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        "How can I help you today?",
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -254,7 +226,21 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-        ])));
+        ])
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Define the action when the button is pressed
+          // For example, you can navigate to another screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Chatbot()),
+          );
+        },
+        child: Icon(Icons.adb_sharp),
+        backgroundColor: Color(0Xffc199cd),
+      ),
+    );
   }
 
   Widget buildResultCard(data) {
@@ -330,6 +316,7 @@ class _HomeState extends State<Home> {
 
 class ChatRoomListTile extends StatefulWidget {
   final String lastMessage, chatRoomId, myUsername, time;
+
   ChatRoomListTile(
       {required this.chatRoomId,
       required this.lastMessage,
@@ -373,59 +360,64 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                     profileurl: profilePicUrl,
                     username: username)));
       },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            profilePicUrl == ""
-                ? CircularProgressIndicator()
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
-                    child: Image.network(
-                      profilePicUrl,
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
-                    )),
-            SizedBox(
-              width: 10.0,
-            ),
-            Column(
+      child: Expanded(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10.0),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                profilePicUrl == ""
+                    ? CircularProgressIndicator()
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: Image.network(
+                          profilePicUrl,
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
+                        )),
                 SizedBox(
-                  height: 10.0,
+                  width: 10.0,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      username,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Text(
+                        widget.lastMessage,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
                 Text(
-                  username,
+                  widget.time,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17.0,
+                      color: Colors.black45,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.w500),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Text(
-                    widget.lastMessage,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Colors.black45,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500),
-                  ),
                 ),
               ],
             ),
-            Spacer(),
-            Text(
-              widget.time,
-              style: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500),
-            ),
-          ],
+          ),
         ),
       ),
     );

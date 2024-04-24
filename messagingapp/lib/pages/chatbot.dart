@@ -51,7 +51,6 @@ class _ChatbotState extends State<Chatbot> {
         backgroundColor: Color(0xFF26A69A),
         title: Row(
           children: [
-            Icon(Icons.account_circle_outlined),
             SizedBox(width: 8),
             Text(
               'Chat with Gemini',

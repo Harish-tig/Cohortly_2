@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:messagingapp/pages/chatgpt.dart';
 import 'package:messagingapp/pages/chatpage.dart';
 import 'package:messagingapp/service/database.dart';
 import 'package:messagingapp/service/shared_pref.dart';
@@ -113,40 +115,41 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
+            padding: const EdgeInsets.only(
+                left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 search
                     ? Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      initiateSearch(value.toUpperCase());
-                    },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search User',
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
+                        child: TextField(
+                          onChanged: (value) {
+                            initiateSearch(value.toUpperCase());
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Search User',
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
                     : Text(
-                  "ChatUp",
-                  style: TextStyle(
-                    color: Color(0Xffc199cd),
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                        "ChatUp",
+                        style: TextStyle(
+                          color: Color(0Xffc199cd),
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                 GestureDetector(
                   onTap: () {
                     search = true;
@@ -160,19 +163,19 @@ class _HomeState extends State<Home> {
                     ),
                     child: search
                         ? GestureDetector(
-                      onTap: () {
-                        search = false;
-                        setState(() {});
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: Color(0Xffc199cd),
-                      ),
-                    )
+                            onTap: () {
+                              search = false;
+                              setState(() {});
+                            },
+                            child: Icon(
+                              Icons.close,
+                              color: Color(0Xffc199cd),
+                            ),
+                          )
                         : Icon(
-                      Icons.search,
-                      color: Color(0Xffc199cd),
-                    ),
+                            Icons.search,
+                            color: Color(0Xffc199cd),
+                          ),
                   ),
                 )
               ],
@@ -198,45 +201,46 @@ class _HomeState extends State<Home> {
                   children: [
                     search
                         ? ListView(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      primary: false,
-                      shrinkWrap: true,
-                      children: tempSearchStore.map((element) {
-                        return buildResultCard(element);
-                      }).toList(),
-                    )
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            primary: false,
+                            shrinkWrap: true,
+                            children: tempSearchStore.map((element) {
+                              return buildResultCard(element);
+                            }).toList(),
+                          )
                         : Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Chatbot(),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: 10.0,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Chatbot(),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
+                              ChatRoomList(),
                             ],
                           ),
-                        ),
-                        ChatRoomList(),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -248,10 +252,62 @@ class _HomeState extends State<Home> {
         onPressed: () {
           // Define the action when the button is pressed
           // For example, you can navigate to another screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Chatbot()),
-          );
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return SizedBox(
+                  height: 180,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Chatbot(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.systemBlue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Google Gemini",style: TextStyle(fontSize: 20,color: Colors.white),),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.activeGreen,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("     Chat GPT     ",style: TextStyle(fontSize: 20),),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              });
         },
         child: Icon(Icons.adb_sharp),
         backgroundColor: Color(0Xffc199cd),
@@ -282,7 +338,6 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
 
   Widget buildResultCard(data) {
     return GestureDetector(
